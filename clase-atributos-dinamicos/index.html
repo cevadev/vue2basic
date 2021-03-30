@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Curso Basico de Vue.js | Platzi</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <!--definimos nuestra propiedad el en el div id=app. todo lo que esta dentro del div es el scope de Vue-->
+    <div id="app">
+        <img v-bind:src= "img" v-bind:alt= "name" />
+        <h1>
+            {{ name }}
+            <!--mostramos el emoji si el changePercent es mayor a 0 de lo contrario mostramos otro emoji-->
+            <span v-if="changePercent > 0">👍👍</span>
+            <span v-else-if="changePercent < 0">😢😢</span>
+            <span v-else>👌</span>
+
+            <!--utilizamos v-show
+            <span v-show="changePercent > 0">👍👍</span>
+            <span v-show="changePercent < 0">😢😢</span>
+            <span v-show="changePercent === 0">👌</span>-->
+
+            <!--renderizando listas-->
+            <ul>
+                <!--representamos cada elemento del array de prices con el elemento li de html-->
+                <!--p es un objeto usamos la propiedad day porque cada dia podra representar de manera univoca 
+                    cada objeto del array-->
+                <li v-for="(p, i) in prices" v-bind:key="p">
+                    {{ i }}-{{ p }}
+                </li>
+            </ul>
+
+            <!--renderizando lista de objetos-->
+            <ul>
+                <!--representamos cada elemento del array de prices con el elemento li de html-->
+                <li v-for="(p, i) in pricesWithDays" v-bind:key="p.day">
+                {{ i }} - {{ p.day }} - {{p.value}}
+                </li>
+            </ul>
+        </h1>
+    </div>
+    <!--importamos la dependencia de Vue.js-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
