@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Curso Basico de Vue.js | Platzi</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <!--definimos nuestra propiedad el en el div id=app. todo lo que esta dentro del div es el scope de Vue-->
+    <div id="app" v-bind:style="{ background: '#' + color}">
+        <img v-on:mouseover="toggleShowCurrencies" 
+            v-on:mouseout="toggleShowCurrencies"
+            v-bind:src= "img" 
+            v-bind:alt= "name" />
+        <!--cambio de clases css en tiempo real con v-bind:class-->
+        <h1 class="uppercase"
+            v-bind:class="changePercent > 0 ? 'green' : 'red'">
+            {{ name }}
+            <!--mostramos el emoji si el changePercent es mayor a 0 de lo contrario mostramos otro emoji-->
+            <span v-if="changePercent > 0">👍👍</span>
+            <span v-else-if="changePercent < 0">😢😢</span>
+            <span v-else>👌</span>
+
+            <!--utilizamos v-show
+            <span v-show="changePercent > 0">👍👍</span>
+            <span v-show="changePercent < 0">😢😢</span>
+            <span v-show="changePercent === 0">👌</span>-->
+
+            <!--renderizando lista de objetos-->
+            <ul>
+                <!--representamos cada elemento del array de prices con el elemento li de html-->
+                <!--la variable price nos ayudara a determinar en que color cada uno de los precios-->
+                <li 
+                    v-bind:class="{ orange: p.value == price, red: p.value < price, gree: p.value > price}"
+                    v-for="(p, i) in pricesWithDays" 
+                    v-bind:key="p.day">
+                    {{ i }} - {{ p.day }} - {{p.value}}
+                </li>
+            </ul>
+
+            <span v-on:click="toggleShowCurrencies">Ver currencies</span>
+            <!--mostramos la lista de cripto monedas por medio del valor de una propiedad-->
+            <ul v-show="showCurrencies">
+                <li v-for="(c, i) in criptoCurrencies" v-bind:key="c">
+                    {{ i }}-{{ c }}
+                </li>
+            </ul>
+
+        </h1>
+    </div>
+    <!--importamos la dependencia de Vue.js-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
