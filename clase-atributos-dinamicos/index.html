@@ -12,7 +12,10 @@
 <body>
     <!--definimos nuestra propiedad el en el div id=app. todo lo que esta dentro del div es el scope de Vue-->
     <div id="app">
-        <img v-bind:src= "img" v-bind:alt= "name" />
+        <img v-on:mouseover="toggleShowCurrencies" 
+            v-on:mouseout="toggleShowCurrencies"
+            v-bind:src= "img" 
+            v-bind:alt= "name" />
         <h1>
             {{ name }}
             <!--mostramos el emoji si el changePercent es mayor a 0 de lo contrario mostramos otro emoji-->
@@ -40,6 +43,14 @@
                 <!--representamos cada elemento del array de prices con el elemento li de html-->
                 <li v-for="(p, i) in pricesWithDays" v-bind:key="p.day">
                 {{ i }} - {{ p.day }} - {{p.value}}
+                </li>
+            </ul>
+
+            <span v-on:click="toggleShowCurrencies">Ver currencies</span>
+            <!--mostramos la lista de cripto monedas por medio del valor de una propiedad-->
+            <ul v-show="showCurrencies">
+                <li v-for="(c, i) in criptoCurrencies" v-bind:key="c">
+                    {{ i }}-{{ c }}
                 </li>
             </ul>
         </h1>

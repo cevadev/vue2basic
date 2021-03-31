@@ -19,6 +19,15 @@ new Vue({
         { day: "Sabado", value: 10000 },
         { day: "Domingo", value: 10200 },
       ],
+      criptoCurrencies: ["Bitcoin", "Ethereum", "Litecoin", "NEO", "IOTA"],
+      //propiedad showPrices controlamos cuando mostrar u ocultar la lista de precios
+      showCurrencies: false,
     };
+  },
+  //definimos metodos
+  methods: {
+    toggleShowCurrencies: function () {
+      this.showCurrencies = !this.showCurrencies;
+    },
   },
 });
