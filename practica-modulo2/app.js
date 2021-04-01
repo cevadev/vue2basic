@@ -1,11 +1,38 @@
-new Vue({
+const app = new Vue({
   el: "#app",
 
   data() {
-    return {};
+    return {
+      courses: [],
+
+      title: "",
+      time: "",
+    };
   },
 
-  computed: {},
+  computed: {
+    totalTime() {
+      if (!this.courses.length) {
+        return 0;
+      }
 
-  methods: {},
+      return this.courses.reduce((a, b) => a + parseInt(b.time), 0);
+    },
+  },
+
+  methods: {
+    addCourse() {
+      if (!this.title || !this.time) {
+        return;
+      }
+
+      this.courses.push({
+        title: this.title,
+        time: this.time,
+      });
+
+      this.title = "";
+      this.time = 0;
+    },
+  },
 });
