@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso Basico de Vue.js | Platzi</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div id="app" v-bind:style="{ background: '#' + color}">
+    
+        <!--llamamos nuestro componente. le pasamos las propiedades al componente-->
+        <!--escuchamos el evento change-color emitido por el componente hijo coin-detail y definimos la funcion
+            que va a responder al evento change-color-->
+        <coin-detail 
+            v-on:change-color="updateColor"
+            v-bind:coin="btc">
+            <template v-slot:lorem>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut libero velit. Curabitur eget sapien malesuada,
+                    commodo
+                    elit tempor, pharetra lacus. Proin id pulvinar enim, et ornare lorem. Nullam nibh elit, tristique ut purus vel,
+                    vehicula
+                    sagittis sapien. Morbi in congue est. Nulla id mi gravida, rutrum risus id, accumsan massa. In aliquam nisi at augue
+                    commodo, vel convallis nunc consectetur. Pellentesque non vestibulum arcu.
+                </p>
+            </template>
+            <template v-slot:link>
+                <a href="www.youtube.com">youtube</a>
+            </template>
+        </coin-detail>
+
+        
+    </div>
+    <!--importamos la dependencia de Vue.js-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+    <script src="app.js"></script>
+</body>
+</html>
