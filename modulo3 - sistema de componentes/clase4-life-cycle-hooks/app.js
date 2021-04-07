@@ -1,3 +1,4 @@
+Vue.config.devtools = true;
 Vue.component("CoinDetail", {
   //el componente CoinDetail espera recibir una propiedad llamada coin que es un objeto que retorna nuestra
   //instancia de Vue.
