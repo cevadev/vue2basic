@@ -4,6 +4,7 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import About from "./views/About.vue";
 import Error from "./views/Error.vue";
+import CoinDetail from "./views/CoinDetail";
 
 //indicamos a Vue que utilice el router
 Vue.use(Router);
@@ -31,6 +32,12 @@ export default new Router({
       path: "*",
       name: "error",
       component: Error,
+    },
+    //ruta dinamica que mostrara la informacion detallada de una cripto
+    {
+      path: "/coin/:id",
+      name: "coin-detail",
+      component: CoinDetail,
     },
   ],
 });

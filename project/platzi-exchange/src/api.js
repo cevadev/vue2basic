@@ -10,7 +10,31 @@ function getAssets() {
   );
 }
 
+//funcion que nos trae una moneda en particular
+function getAsset(coin) {
+  return fetch(`${url}/assets/${coin}`)
+    .then((res) => res.json())
+    .then((res) => res.data);
+}
+
+//obtenemos el historial de precios de la criptomoneda
+function getAssetHistory(coin) {
+  const now = new Date(); //hora del momento
+  const end = now.getTime(); //timestamp de la fecha de ahora
+  now.setDate(now.getDate() - 1); //seteamos a now a la fecha de un dia anterior
+  const start = now.getTime(); //valor de ahora menos un dia
+
+  return fetch(
+    //history tiene varios intervalo
+    `${url}/assets/${coin}/history?interval=h1&start=${start}&end=${end}`
+  )
+    .then((res) => res.json())
+    .then((res) => res.data);
+}
+
 //exportamos la funcion
 export default {
   getAssets,
+  getAsset,
+  getAssetHistory,
 };
