@@ -77,12 +77,37 @@
         v-bind:max="max"
         v-bind:data="chartData"
       />
+
+      <!--mostramos la lista de Exchanges donde m representa un exchange de markets-->
+      <h3 class="text-xl my-10">Mejores Ofertas de Cambio</h3>
+      <table>
+        <tr v-for="m in markets" v-bind:key="`${m.exchangeId}-${m.priceUsd}`" class="border-b">
+          <td>
+            <b>{{ m.exchangeId }}</b>
+          </td>
+          <td>
+            {{ m.priceUsd | dollar}}
+          </td>
+          <td>
+            {{ m.baseSymbol }} / {{ m.quoteSymbol }}
+          </td>
+          <td>
+            <!--el boton solo se mostrará cuando el market tiene url, si el market no tiene url
+                mostramos el link con el m.url-->
+            <px-button v-on:is-loading="m.isLoading || false" v-if="!m.url" v-on:custom-click="getWebSite(m)">
+              <slot>Obtener Link</slot>
+            </px-button>
+            <a v-else class="hover:underline text-green-600" target="_blanck">{{ m.url }}</a>
+          </td>
+        </tr>
+      </table>
     </template>
   </div>
 </template>
 
 <script>
 import api from '../api';
+import PxButton from '../components/PxButton.vue'
 
 export default {
   name: 'CoinDetail',
@@ -92,9 +117,12 @@ export default {
       isLoading: false,
         //la propiedad asset se carga con datos que viene del api
       asset: {},
-      history: []
+      history: [],
+      markets: []
     }
   },
+
+  components: { PxButton },
 
   computed: {
       //calculamos los valores min max avg con los valores del array history
@@ -126,10 +154,31 @@ export default {
 
   //cuando el componente se crea se llama a la funcion getCoin
   created() {
-    this.getCoin()
+    this.getCoin()  
   },
 
   methods: {
+    //metodo que obtiene de la api toda la información relacionada con el exchange, dentro de la info esta la url
+    getWebSite(exchange){
+       this.$set(exchange, 'isLoading', true);
+      return api.getExchange(exchange.exchangeId)
+        .then(res => {
+          //el valor de la url del exchange lo asignamos al exchange local, que lo tenemos guardado dentro del 
+          //componente
+          
+          //this.$set nos ayuda a reslver los problemas de reactividad que tiene vue, este problema surge cuando
+          //intentamos agregar propiedades que no existen en el objeto desde el principio de su creacion, es decir,
+          //propiedades que no se establecieron en data o que no se establecieron cuando el objeto fue creado
+          
+          //recibe-> el objeto, el nombre de propiedad y valor de la propiedad
+          this.$set(exchange, 'url', res.exchangeUrl)
+        })
+        .finally(() => {
+          //cambiamos el valor de la propiedad isLoading
+          this.$set(exchange, 'isLoading', false)
+        })
+    },
+
       //metodo que recupera los datos de la moneda
     getCoin() {
         //el id es parte de la url, con la funcionalidad $route se agrega a cada componente de vue cuando trabajamos con router
@@ -141,12 +190,13 @@ export default {
       //Promise.all nos permite ejecutar varias promesas al mismo tiempo a traves de un array
       Promise.all(
           //llamamos a nuestras funciones
-          [api.getAsset(id), api.getAssetHistory(id)])
+          [api.getAsset(id), api.getAssetHistory(id), api.getMarkets(id)])
           //obtenemos un array con los asset y history
-          .then(([asset, history]) => {
+          .then(([asset, history, markets]) => {
               //mapeamos el array asset con la variable asset y el array history con la variable history
           this.asset = asset
           this.history = history
+          this.markets = markets
         }
       )
       //ocultamos el spinner
