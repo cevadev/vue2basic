@@ -1,7 +1,11 @@
 <template>
   <div class="flex-col">
-      <!--si se cumple la condicion construimod el html-->
-    <template v-if="asset.id">
+    <!--incluimos el componete de tercero vue spinner-->
+    <div>
+      <bounce-loader v-bind:loading="isLoading" v-bind:color="'#68d391'" v-bind:size="100" />
+    </div>
+      <!--si isLoading false (terminó la carga) construimod el html-->
+    <template v-if="!isLoading">
       <div class="flex flex-col sm:flex-row justify-around items-center">
         <div class="flex flex-col items-center">
           <img
@@ -64,6 +68,15 @@
           <span class="text-xl"></span>
         </div>
       </div>
+      <!--mostramos un grafico en base al historial del precio de las monedas
+          min, max, chartData propiedades computadas-->
+      <line-chart
+        class="my-10"
+        v-bind:colors="['orange']"
+        v-bind:min="min"
+        v-bind:max="max"
+        v-bind:data="chartData"
+      />
     </template>
   </div>
 </template>
@@ -76,6 +89,7 @@ export default {
 
   data() {
     return {
+      isLoading: false,
         //la propiedad asset se carga con datos que viene del api
       asset: {},
       history: []
@@ -99,7 +113,15 @@ export default {
 
     avg() {
         return this.history.reduce((a, b) => a + parseFloat(b.priceUsd), 0) / this.history.length
-    }
+    },
+
+    chartData() {
+      const data = []
+      this.history.map(h => {
+        data.push([h.date, parseFloat(h.priceUsd).toFixed(2)])
+      })
+      return data
+}
   },
 
   //cuando el componente se crea se llama a la funcion getCoin
@@ -114,6 +136,8 @@ export default {
         //$route representa a la ruta y toda la info de la ruta, aqui accedemos a los parametros
       const id = this.$route.params.id
       
+      //mostramos que el spinner se cargue
+      this.isLoading = true;
       //Promise.all nos permite ejecutar varias promesas al mismo tiempo a traves de un array
       Promise.all(
           //llamamos a nuestras funciones
@@ -125,6 +149,8 @@ export default {
           this.history = history
         }
       )
+      //ocultamos el spinner
+      .finally(() => (this.isLoading = false))
     }
   }
 }

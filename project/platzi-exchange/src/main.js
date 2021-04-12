@@ -9,6 +9,13 @@ import "@/assets/css/tailwind.css";
 import router from "./router.js";
 import { dollarFilter, percentFilter } from "./filters.js";
 
+import Chart from "chart.js";
+import Chartick from "vue-chartkick";
+import { VueSpinners } from "@saeris/vue-spinners";
+
+//utilizamos los componentes terceros
+Vue.use(VueSpinners);
+Vue.use(Chartick.use(Chart));
 Vue.filter("dollar", dollarFilter);
 Vue.filter("percent", percentFilter);
 Vue.config.productionTip = false;

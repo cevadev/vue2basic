@@ -24,7 +24,11 @@
           <b>#{{ a.rank }}</b>
         </td>
         <td>
-          {{ a.name }}
+          <router-link class="hover:underline text-green-600"
+            v-bind:to="{ name: 'coin-detail', params: { id: a.id}}">
+            {{ a.name }}
+          </router-link>
+          <small class="ml-1 text-gray-500">{{ a.symbol }}</small>
         </td>
         <td>
           {{ a.priceUsd | dollar}}
@@ -36,15 +40,23 @@
         <td v-bind:class="a.changePercent24Hr.includes('-') ? 'text-red-600' : 'text-green-600'">
           {{ a.changePercent24Hr | percent}}
         </td>
-        <td class="hidden sm:block"></td>
+        <td class="hidden sm:block">
+          <!--custom:click hace referencia al evento emitido por el componente PxButton-->
+          <px-button v-on:custom-click="goToCoin(a.id)">
+            <span>Detalle</span>
+          </px-button>
+        </td>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script>
+import PxButton from '../components/PxButton.vue'
 export default {
   name: "PxAssetsTable",
+  //registramos el componente
+  components: { PxButton },
   /**
    * por cada criptomoneda que recibe, la propiedad assets que va a recibir las coins del API
    */
@@ -54,6 +66,14 @@ export default {
       //definimos un valor por defecto que es un function que retorna un array vacio para el caso de un objeto seria {}
       default: () => []
     }
+  },
+  methods: {
+      //handler para el boton detalle
+      goToCoin(id){
+        //el objeto $router accede a la instancia del router y se utiliza para navegar a traves de código
+        //push() empujamos una nueva ruta dentro del stack de rutas de router
+        this.$router.push({ name: 'coin-detail', params: { id }});
+      }
   }
 };
 </script>
