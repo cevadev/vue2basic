@@ -1,6 +1,6 @@
 <template>
   <main>
-    <px-header />
+    <px-header v-bind:links="links"/>
     <router-view class="container px-5 sm:px-20 py-20 flex justify-center"/>
     <!--<px-assets-table />
      <img alt="Vue logo" src="./assets/logo.png">
@@ -26,6 +26,25 @@ export default {
     PxHeader,
     //PxAssetsTable
     //HelloWorld
+  },
+  //lista de links que pasamos a PxHeader
+  data(){
+    return{
+      links: [
+        {
+          title: 'BTC',
+          to: { name: 'coin-detail', params: { id: 'bitcoin' } }
+        },
+        {
+          title: 'ETH',
+          to: { name: 'coin-detail', params: { id: 'ethereum' } }
+        },
+        {
+          title: 'XRP',
+          to: { name: 'coin-detail', params: { id: 'xrp' } }
+        }
+      ]
+    }
   }
 }
 </script>

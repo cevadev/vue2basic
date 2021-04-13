@@ -5,7 +5,7 @@
     class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-2 border border-green-500 hover:border-transparent rounded"
   >
   <!--agregamos un loader-->
-  <beat-loader v-on:loading="isLoading" v-on:color="'#68d391'" v-on:size="8" />
+  <beat-loader v-show="isLoading" v-on:loading="isLoading" v-on:color="'#68d391'" v-on:size="8" />
 
   <!--slot para reemplazar el contenido por algun texto que deseamos-->
     <div v-show="!isLoading">
